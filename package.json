@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build": "tsc && npm run copy-assets",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -23,7 +23,8 @@
     "migration:generate": "npm run typeorm -- -d ./src/config/typeorm.ts migration:generate",
     "migration:create": "npm run typeorm migration:create",
     "migration:revert": "npm run typeorm -- -d ./src/config/typeorm.ts migration:revert",
-    "migration:show": "npm run typeorm -- -d ./src/config/typeorm.ts migration:show"
+    "migration:show": "npm run typeorm -- -d ./src/config/typeorm.ts migration:show",
+    "copy-assets": "copyfiles -u 1 src/nodemailer-correo/**/* dist/src/nodemailer-correo"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.4",
@@ -40,9 +41,12 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cloudinary": "^2.5.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "express-session": "^1.18.0",
+    "fs-extra": "^11.2.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.15",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.13.0",
@@ -63,6 +67,7 @@
     "@types/jest": "^29.5.2",
     "@types/multer": "^1.4.12",
     "@types/node": "^20.3.1",
+    "@types/nodemailer": "^6.4.16",
     "@types/streamifier": "^0.1.2",
     "@types/supertest": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
@@ -79,7 +84,8 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
     "typeorm": "^0.3.20",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+     "fs-extra": "^10.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
