@@ -13,7 +13,11 @@ const PORT = process.env.PORT || 3000
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'https://lasercol.vercel.app', // Especifica el origen permitido
+    credentials: true, // Permitir credenciales como cookies
+  });
+  
   app.useGlobalPipes(new ValidationPipe());
   const options = new DocumentBuilder()
     .setTitle('NESTJS API - Ecommerce Lasercol')
