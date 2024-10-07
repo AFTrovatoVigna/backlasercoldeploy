@@ -78,11 +78,11 @@ export class AuthController {
   }
 
   @Get('api/google/register/customer')
-  @UseGuards(CustomerGoogleAuthGuard)
+  //@UseGuards(CustomerGoogleAuthGuard)
   async googleCustomerAuth(@Req() req: Request) {}
 
   @Get('api/callback/google/register/customer')
-  @UseGuards(CustomerGoogleAuthGuard)
+  //@UseGuards(CustomerGoogleAuthGuard)
   async googleCustomerAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user: any = req.user;
     if (user && typeof user === 'object') {
