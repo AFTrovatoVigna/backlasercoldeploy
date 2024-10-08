@@ -80,4 +80,9 @@ export class AuthService {
     const newUser = await this.userRepository.save(details);
     return newUser || 'googleRegisterError=internalError';
   }
+
+  async findUser(id: string) {
+    let user = await this.userRepository.findOneBy({ id });
+    return user;
+  }
 }
