@@ -40,7 +40,7 @@ export class Users {
   })
   @Column({
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   password: string;
 

@@ -19,7 +19,7 @@ export class RegisterGoogleStrategy extends PassportStrategy(
       scope: ['profile', 'email'],
     });
   }
-
+  
   async validate(
     accessToken: string,
     refreshToken: string,
