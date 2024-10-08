@@ -48,6 +48,7 @@ export class AuthController {
     );
     return newUser;
   }
+  
   @Post('/login')
   @ApiOperation({
     summary: 'Iniciar sesión de usuario',
@@ -69,6 +70,8 @@ export class AuthController {
   @UseGuards(AuthGuard('google-login'))
   async googleLoginAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user: any = req.user;
+    console.log(user.id);
+    
     if (user && typeof user === 'object') {
       const payload = { id: user.id, name: user.name, email: user.email };
       const token = this.jwtService.sign(payload);
@@ -78,7 +81,7 @@ export class AuthController {
       res.cookie('userInfo', JSON.stringify(sessionInfo), { httpOnly: false });
       res.redirect(`https://lasercol.vercel.app/`);
     } else {
-      res.redirect(`https://lasercol.vercel.app/register?user=DoesNotExist`);
+      res.redirect(`https://lasercol.vercel.app/register?user=DoesNotExist`); 
     }
   }
 

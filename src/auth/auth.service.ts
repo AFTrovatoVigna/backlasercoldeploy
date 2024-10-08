@@ -17,10 +17,9 @@ export class AuthService {
   ) {}
 
   async register(user: Partial<Users>) {
-    const { email, password } = user;
+    const { email, password, Dni } = user;
 
     const userFound = await this.usersService.getUserByEmail(email);
-
     if (userFound) {
       throw new BadRequestException('el usuario ya esta registrado');
     }
