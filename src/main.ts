@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  console.log("dayana<3")
+  console.log("dayana y mi marido")
   app.enableCors({
     origin: 'https://lasercol.vercel.app', // Especifica el origen permitido
     credentials: true, // Permitir credenciales como cookies
