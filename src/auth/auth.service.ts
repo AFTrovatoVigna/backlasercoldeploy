@@ -66,6 +66,7 @@ export class AuthService {
   }
   async googleLogin(details: { email: string }) {
     const user = await this.usersService.getUserByEmail(details.email);
+    console.log(user)
     return user || 'googleLoginError';
   }
 
