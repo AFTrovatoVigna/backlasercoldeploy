@@ -72,8 +72,11 @@ export class AuthController {
     if (user && typeof user === 'object') {
       const payload = { id: user.id, name: user.name, email: user.email };
       const token = this.jwtService.sign(payload);
-      res.cookie('userInfo', JSON.stringify(payload), { httpOnly: true });
-      res.redirect(`https://lasercol.vercel.app/?token=${token}`);
+      const sessionInfo = payload
+      sessionInfo["token"] = token;
+      
+      res.cookie('userInfo', JSON.stringify(sessionInfo), { httpOnly: false });
+      res.redirect(`https://lasercol.vercel.app/`);
     } else {
       res.redirect(`https://lasercol.vercel.app/register?user=DoesNotExist`);
     }

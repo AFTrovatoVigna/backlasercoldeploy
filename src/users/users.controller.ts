@@ -82,4 +82,7 @@ export class UsersController {
   updateUser(@Param('id') id: string, @Body() user: CreateUserDTO) {
     return this.usersService.updateUser(id, user);
   }
+
+  @Get('userEmail/:email')
+  getUserByEmail(){}
 }
