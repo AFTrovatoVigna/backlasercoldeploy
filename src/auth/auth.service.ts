@@ -64,10 +64,13 @@ export class AuthService {
       id,
     };
   }
+
   async googleLogin(details: { email: string }) {
     const user = await this.usersService.getUserByEmail(details.email);
-    console.log(user)
-    return user || 'googleLoginError';
+    if (user) {
+      return { id: user.id };  // Retornas el ID del usuario
+    }
+    return 'googleLoginError';  // Si no existe el usuario, devuelves un mensaje de error
   }
 
   async googleRegisterCustomer(details: {
