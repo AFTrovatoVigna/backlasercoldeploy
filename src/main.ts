@@ -8,7 +8,7 @@ import { config as dotenvConfig } from 'dotenv';
 import * as passport from 'passport';
 
 dotenvConfig({ path: '.env' });
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +17,7 @@ async function bootstrap() {
     origin: 'https://lasercol.vercel.app', // Especifica el origen permitido
     credentials: true, // Permitir credenciales como cookies
   });
-  
+
   app.useGlobalPipes(new ValidationPipe());
   const options = new DocumentBuilder()
     .setTitle('NESTJS API - Ecommerce Lasercol')
