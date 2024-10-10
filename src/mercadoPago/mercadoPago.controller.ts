@@ -6,7 +6,7 @@ import { ApiOperation } from '@nestjs/swagger';
 export class MercadoPagoController {
     constructor(private readonly mercadoPagoService: MercadoPagoService) { }
 
-    @Post('crear-preferencia')
+  @Post('crear-preferencia')
     @ApiOperation({
         summary: "Crear una preferencia de pago en MercadoPago",
         description: `
@@ -15,29 +15,25 @@ export class MercadoPagoController {
           También se define una URL de retorno para redirigir al usuario una vez finalizado el pago.
         `,
       })
-    async crearPreferencia(@Body() body) {
-        console.log(body);
-        
-
-        const preferencia = {
-            items: body.items.map(item => {
-                return ({
-                    title: item.titulo,
-                    quantity: item.cantidad,
-                    unit_price: Number(item.precio),
-                    picture_url: item.image
-                })
-            }),
-            payer: {
-                email: body.email
-            }
-
-            ,
-            back_urls: {
-                success: 'https://lasercol.vercel.app',
-            },
-            auto_return: 'approved',
+  async crearPreferencia(@Body() body) {
+    const preferencia = {
+      items: body.items.map((item) => {
+        return {
+          title: item.titulo,
+          quantity: item.cantidad,
+          unit_price: Number(item.precio),
+          picture_url: item.image,
         };
+      }),
+      payer: {
+        email: body.email,
+      },
+
+      back_urls: {
+        success: 'https://lasercol.vercel.app',
+      },
+      auto_return: 'approved',
+    };
 
         const response = await this.mercadoPagoService.crearPago(preferencia);
         return response;

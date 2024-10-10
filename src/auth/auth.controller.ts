@@ -97,11 +97,23 @@ export class AuthController {
   async googleCustomerAuthRedirect(@Req() req: Request, @Res() res: Response) {
     const user: any = req.user;    
     if (user && typeof user === 'object') {
-      const userFound = await this.usersService.getUserByEmail(user.email);
-      this.cartService.createCart(userFound.id);
-      res.redirect('https://lasercol.vercel.app/login');
-    } else {
-      res.redirect('https://lasercol.vercel.app/register?error=userExists');
+      userFound = await this.usersService.getUserByEmail(user.email);
+
+      if (userFound) {
+        this.cartService.createCart(userFound.id);
+
+        await this.emailService.sendMail(
+          user.email,
+          'Bienvenido a Lasercol',
+          'Gracias por registrarte en nuestra plataforma',
+          user.name,
+        );
+
+        res.redirect('https://lasercol.vercel.app/login');
+      } else {
+        res.redirect('https://lasercol.vercel.app/register?error=userExists');
+      }
     }
+    return userFound;
   }
 }
