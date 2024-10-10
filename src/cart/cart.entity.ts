@@ -27,7 +27,7 @@ export class Cart {
   total: number;
 
 
-  @Column({ nullable: false })
+  @Column()
   quantity?: number;
 
   @Column({ nullable: true })
