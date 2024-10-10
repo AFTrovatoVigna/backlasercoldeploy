@@ -95,7 +95,8 @@ export class AuthController {
   @Get('api/callback/google/register/customer')
   @UseGuards(AuthGuard('google-register'))
   async googleCustomerAuthRedirect(@Req() req: Request, @Res() res: Response) {
-    const user: any = req.user;    
+    const user: any = req.user;   
+    let userFound = null;
     if (user && typeof user === 'object') {
       userFound = await this.usersService.getUserByEmail(user.email);
 
