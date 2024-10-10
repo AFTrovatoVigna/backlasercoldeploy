@@ -11,6 +11,7 @@ import { CartService } from './cart.service';
 import { Cart } from './cart.entity';
 import { CartResponse } from './cart.interface';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Orders } from 'src/orders/orders.entity';
 
 
 @ApiTags("Cart")
@@ -90,5 +91,10 @@ export class CartController {
     @Param('productId') productId: string,
   ) {
     return this.cartService.removeProductCart(cartId, productId);
+  }
+
+  @Post(':cartId/order')
+  async createOrderFromCart(@Param('cartId') cartId: string): Promise<Orders> {
+    return this.cartService.createOrderFromCart(cartId);
   }
 }
