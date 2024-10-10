@@ -98,7 +98,7 @@ export class CartController {
     return this.cartService.removeProductCart(cartId, productId);
   }
 
-  @Post(':cartId/order')
+  @Post(':cartId/:userId/order')
   async createOrderFromCart(
     @Param('cartId') cartId: string,
     @Param('userId') userId: string,
