@@ -104,4 +104,18 @@ export class OrdersController {
     }
     return this.ordersService.getAllOrders(1, 10);
   }
+
+  @Post('create-from-cart/:userId')
+  @ApiOperation({
+    summary: "Crear una orden basada en el carrito del usuario",
+    description: `
+      Esta ruta permite a los usuarios autenticados crear una orden utilizando todos los productos en su carrito actual.
+      Se debe proporcionar el 'userId' del usuario como parámetro en la URL.
+    `,
+  })
+  async createOrderFromCart(@Param('userId') userId: string) {
+    // Llama al servicio para crear la orden basada en el carrito
+    return this.ordersService.createOrderFromCart(userId);
+  }
+
 }

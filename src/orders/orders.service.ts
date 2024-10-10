@@ -9,6 +9,8 @@ import { Users } from 'src/users/users.entity';
 import { Repository } from 'typeorm';
 import { Orders } from './orders.entity';
 import { OrderDetails } from './orderdetails.entity';
+import { Cart } from 'src/cart/cart.entity';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class OrdersService {
@@ -21,6 +23,9 @@ export class OrdersService {
     private usersRepository: Repository<Users>,
     @InjectRepository(Products)
     private productsRepository: Repository<Products>,
+    @InjectRepository(Cart)
+    private cartRepository: Repository<Cart>,
+    private cartService: CartService
   ) {}
 
   //async addOrder(userId: string, products: any) {
@@ -138,5 +143,62 @@ export class OrdersService {
     orders = orders.slice(start, end);
 
     return orders;
+  }
+
+  async createOrderFromCart(userId: string) {
+    // Obtener el usuario
+    const user = await this.usersRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    // Obtener el carrito del usuario
+    const cart = await this.cartService.getCartById(userId); // Use cartService here
+    if (!cart || !cart.products || cart.products.length === 0) {
+      throw new NotFoundException('El carrito está vacío o no existe');
+    }
+
+    // Crear la orden
+    const order = new Orders();
+    order.date = new Date();
+    order.user = user;
+    order.cart = cart; // Asociar el carrito a la orden
+
+    // Guardar la orden
+    const newOrder = await this.ordersRepository.save(order);
+
+    // Calcular el total y crear los detalles de la orden
+    let total = 0;
+    const productsArray = await Promise.all(
+      cart.products.map(async (product) => {
+        const productDetails = await this.productsRepository.findOneBy({ id: product.id });
+        if (!productDetails || productDetails.stock <= 0) {
+          throw new BadRequestException(`Producto ${product.id} no disponible`);
+        }
+        total += Number(productDetails.valor);
+
+        // Actualizar stock
+        await this.productsRepository.update(
+          { id: product.id },
+          { stock: productDetails.stock - 1 }
+        );
+
+        return productDetails;
+      })
+    );
+
+    const orderDetail = new OrderDetails();
+    orderDetail.price = total;
+    orderDetail.products = productsArray;
+    orderDetail.order = newOrder;
+
+    // Guardar los detalles de la orden
+    await this.orderDetailsRepository.save(orderDetail);
+
+    // Retornar la orden con detalles
+    return await this.ordersRepository.findOne({
+      where: { id: newOrder.id },
+      relations: ['orderDetails', 'orderDetails.products'],
+    });
   }
 }
