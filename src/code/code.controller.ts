@@ -1,9 +1,10 @@
 import { Controller, Post, Param } from '@nestjs/common';
 import { DiscountService } from './code.service';
 import { CartService } from 'src/cart/cart.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('discounts')
+@ApiTags('Discount')
 export class DiscountController {
   constructor(
     private readonly discountService: DiscountService,

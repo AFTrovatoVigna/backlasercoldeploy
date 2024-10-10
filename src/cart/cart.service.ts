@@ -153,7 +153,7 @@ export class CartService {
 
     cart.isPurchased = true;
     cart.products = [];
-    await this.cartRepository.save(cart);
+    const updatedOrder = await this.ordersRepository.update(order.id, order);
     return newOrder;
   }
   private calculeTotal(products: Products[]): number {

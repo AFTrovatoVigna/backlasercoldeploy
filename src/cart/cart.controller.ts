@@ -99,6 +99,20 @@ export class CartController {
   }
 
   @Post(':cartId/:userId/order')
+  @ApiOperation({
+    summary: 'Crear una orden desde un carrito',
+    description: `
+      Esta ruta permite crear una orden utilizando los productos que están en el carrito de un usuario específico.
+      Parámetros:
+      - cartId: El identificador único del carrito que contiene los productos.
+      - userId: El identificador único del usuario para el cual se creará la orden.
+
+      La operación creará una nueva orden en el sistema utilizando los productos actuales en el carrito, y vaciará el carrito una vez que la orden se haya creado.
+
+      Respuesta:
+      - Retorna el objeto de la orden creada con los detalles correspondientes, incluyendo los productos, el total, y la fecha de creación.
+    `,
+  })
   async createOrderFromCart(
     @Param('cartId') cartId: string,
     @Param('userId') userId: string,

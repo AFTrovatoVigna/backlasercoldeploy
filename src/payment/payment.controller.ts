@@ -1,8 +1,9 @@
 import { Controller, Post, Body, Param } from '@nestjs/common';
 import { PaypalService } from './payment.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('payments')
+@ApiTags('Payments')
 export class PaypalController {
   constructor(private readonly paypalService: PaypalService) {}
 
